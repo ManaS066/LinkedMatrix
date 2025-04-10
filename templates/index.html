@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BridgeWork - Bridging Companies and Universities</title>
+    <title>LinkedMatrix - Connecting Alumni and Students</title>
     <style>
         /* Global Styles */
         :root {
@@ -148,7 +148,7 @@
         
         /* Hero Section */
         .hero {
-            background: linear-gradient(135deg, rgba(67, 97, 238, 0.9), rgba(76, 201, 240, 0.9)), url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover no-repeat;
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.9), rgba(76, 201, 240, 0.9)), url('/api/placeholder/1350/800') center/cover no-repeat;
             height: 100vh;
             display: flex;
             align-items: center;
@@ -228,6 +228,47 @@
         }
         
         .step-description {
+            color: var(--gray-color);
+        }
+        
+        /* Features Section */
+        .features {
+            background-color: var(--light-color);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .feature-card {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+        }
+        
+        .feature-description {
             color: var(--gray-color);
         }
         
@@ -435,6 +476,47 @@
             font-size: 0.9rem;
         }
         
+        /* Modal Styles */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 400px;
+            max-width: 90%;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        
         /* Responsive Styles */
         @media (max-width: 992px) {
             .step {
@@ -490,48 +572,6 @@
                 flex: 0 0 100%;
             }
         }
-        /* Modal Styles */
-.modal {
-    display: none; 
-    position: fixed; 
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: center;
-}
-
-.modal-content {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 400px;
-    max-width: 90%;
-    text-align: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    position: relative;
-}
-
-.close-btn {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 20px;
-    cursor: pointer;
-}
-
-input, textarea {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-
     </style>
 </head>
 <body>
@@ -539,11 +579,12 @@ input, textarea {
     <header>
         <div class="container">
             <nav class="navbar">
-                <a href="#" class="logo">Work<span>Bridge</span></a>
+                <a href="#" class="logo">Linked<span>Matrix</span></a>
                 <ul class="nav-links">
                     <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#features">Features</a></li>
                     <li><a href="/login">Login</a></li>
-                    <li><a href="#testimonials">Testimonials</a></li>
+                    <li><a href="#testimonials">Success Stories</a></li>
                     <li><a href="#faq">FAQ</a></li>
                     <li><a href="#contact" class="btn btn-primary">Contact Us</a></li>
                 </ul>
@@ -556,10 +597,10 @@ input, textarea {
     <section class="hero" id="home">
         <div class="container">
             <div class="hero-content">
-                <h1 class="hero-title">Connecting Companies, Universities & Students</h1>
-                <p class="hero-subtitle">A seamless platform that bridges the gap between industry needs and academic talent</p>
+                <h1 class="hero-title">Connecting Alumni and Students for Success</h1>
+                <p class="hero-subtitle">A powerful platform where alumni can share opportunities and mentor the next generation</p>
                 <div class="hero-btns">
-                    <a href="#login-sections" class="btn btn-primary">Get Started</a>
+                    <a href="#login-sections" class="btn btn-primary">Join the Network</a>
                     <a href="#how-it-works" class="btn btn-outline">Learn More</a>
                 </div>
             </div>
@@ -569,100 +610,156 @@ input, textarea {
     <!-- How It Works Section -->
     <section class="section how-it-works" id="how-it-works">
         <div class="container">
-            <h2 class="section-title text-center">How It Works</h2>
-            <p class="section-subtitle text-center">Our platform simplifies the recruitment process between companies and universities</p>
+            <h2 class="section-title text-center">How LinkedMatrix Works</h2>
+            <p class="section-subtitle text-center">Our platform makes connecting alumni and students seamless and effective</p>
             
             <div class="steps">
                 <div class="step">
                     <div class="step-icon">1</div>
-                    <h3 class="step-title">Company Posts Job</h3>
-                    <p class="step-description">Companies post job opportunities and select target universities and departments</p>
+                    <h3 class="step-title">Alumni Sign Up</h3>
+                    <p class="step-description">Alumni create profiles and indicate areas where they can offer opportunities or mentorship</p>
                 </div>
                 
                 <div class="step">
                     <div class="step-icon">2</div>
-                    <h3 class="step-title">University Receives</h3>
-                    <p class="step-description">Universities review and approve job postings from companies</p>
+                    <h3 class="step-title">Post Opportunities</h3>
+                    <p class="step-description">Alumni share job openings, internships, and other career opportunities with their alma mater</p>
                 </div>
                 
                 <div class="step">
                     <div class="step-icon">3</div>
-                    <h3 class="step-title">HOD Selects Students</h3>
-                    <p class="step-description">Department heads select qualified students based on company requirements</p>
+                    <h3 class="step-title">Students Connect</h3>
+                    <p class="step-description">Students create profiles and can search for opportunities or mentors in their field</p>
                 </div>
                 
                 <div class="step">
                     <div class="step-icon">4</div>
-                    <h3 class="step-title">Students Apply</h3>
-                    <p class="step-description">Selected students can view and apply for the opportunities</p>
+                    <h3 class="step-title">Grow Together</h3>
+                    <p class="step-description">Build meaningful professional relationships and create a thriving community</p>
                 </div>
             </div>
         </div>
     </section>
 
-    
-<!-- Contact Form Modal -->
-<div id="contactModal" class="modal">
-    <div class="modal-content">
-        <span class="close-btn">&times;</span>
-        <h2>Contact Us</h2>
-        <form>
-            <label for="name" align:left>Name:</label>
-            <input type="text" id="name" required>
+    <!-- Features Section -->
+    <section class="section features" id="features">
+        <div class="container">
+            <h2 class="section-title text-center">Platform Features</h2>
+            <p class="section-subtitle text-center">Discover what makes LinkedMatrix the best platform for alumni-student connections</p>
             
-            <label for="email" align:left>Email:</label>
-            <input type="email" id="email" required>
-            
-            <label for="message" align:left>Message:</label>
-            <textarea id="message" rows="4" required></textarea>
-            
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-    </div>
-</div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h3 class="feature-title">Opportunity Board</h3>
+                    <p class="feature-description">Alumni can post jobs, internships, and projects specifically for students from their alma mater</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">👥</div>
+                    <h3 class="feature-title">Mentorship Matching</h3>
+                    <p class="feature-description">AI-powered system connects students with alumni mentors based on career goals and expertise</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">Skill Development</h3>
+                    <p class="feature-description">Access to workshops, webinars, and resources shared by experienced alumni</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h3 class="feature-title">Networking Events</h3>
+                    <p class="feature-description">Virtual and in-person events to strengthen connections within your university community</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">💬</div>
+                    <h3 class="feature-title">Discussion Forums</h3>
+                    <p class="feature-description">Industry-specific forums where students can ask questions and alumni can share insights</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3 class="feature-title">Mobile App</h3>
+                    <p class="feature-description">Stay connected on the go with our user-friendly mobile application</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <!-- Login Sections -->
+    <section class="section login-sections" id="login-sections">
+        <div class="container">
+            <h2 class="section-title text-center">Join Our Community</h2>
+            <p class="section-subtitle text-center">Select the option that best describes you</p>
+            
+            <div class="login-cards">
+                <div class="login-card">
+                    <div class="login-card-header">
+                        <h3>Alumni</h3>
+                    </div>
+                    <div class="login-card-body">
+                        <h4 class="login-card-title">Give Back to Your Community</h4>
+                        <p class="login-card-text">Share opportunities, mentor students, and strengthen your university network</p>
+                        <a href="#" class="btn btn-primary">Alumni Sign Up</a>
+                    </div>
+                </div>
+                
+                <div class="login-card">
+                    <div class="login-card-header">
+                        <h3>Students</h3>
+                    </div>
+                    <div class="login-card-body">
+                        <h4 class="login-card-title">Launch Your Career</h4>
+                        <p class="login-card-text">Connect with alumni, find opportunities, and get guidance from those who've been in your shoes</p>
+                        <a href="#" class="btn btn-primary">Student Sign Up</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Testimonials Section -->
     <section class="section testimonials" id="testimonials">
         <div class="container">
-            <h2 class="section-title text-center">What Our Users Say</h2>
-            <p class="section-subtitle text-center">Hear from companies, universities, and students who have benefited from our platform</p>
+            <h2 class="section-title text-center">Success Stories</h2>
+            <p class="section-subtitle text-center">Hear from alumni and students who have benefited from our platform</p>
             
             <div class="testimonial-slider">
                 <div class="testimonial-slide">
                     <div class="testimonial-avatar">
-                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="John Smith">
+                        <img src="/api/placeholder/80/80" alt="James Wilson">
                     </div>
-                    <p class="testimonial-text">"EduConnect has revolutionized our recruitment process. We've been able to find talented students who perfectly match our requirements, saving us time and resources."</p>
-                    <p class="testimonial-author">John Smith</p>
-                    <p class="testimonial-role">HR Manager, Tech Solutions Inc.</p>
+                    <p class="testimonial-text">"As an alumnus, I wanted to give back to my university community. LinkedMatrix made it easy to post job openings at my company specifically for students from my alma mater. I've hired three brilliant graduates so far!"</p>
+                    <p class="testimonial-author">James Wilson</p>
+                    <p class="testimonial-role">Engineering Manager, Class of 2010</p>
                 </div>
                 
                 <div class="testimonial-slide" style="display: none;">
                     <div class="testimonial-avatar">
-                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah Johnson">
+                        <img src="/api/placeholder/80/80" alt="Sarah Johnson">
                     </div>
-                    <p class="testimonial-text">"As a university administrator, this platform has streamlined our industry partnerships. The interface is intuitive, and the process is transparent for all stakeholders."</p>
-                    <p class="testimonial-author">Dr. Sarah Johnson</p>
-                    <p class="testimonial-role">Dean of Placements, National University</p>
+                    <p class="testimonial-text">"Finding my first internship seemed impossible until I connected with alumni on LinkedMatrix. My mentor guided me through the application process and even referred me to their company. The platform literally launched my career!"</p>
+                    <p class="testimonial-author">Sarah Johnson</p>
+                    <p class="testimonial-role">Marketing Student, Class of 2024</p>
                 </div>
                 
                 <div class="testimonial-slide" style="display: none;">
                     <div class="testimonial-avatar">
-                        <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="Michael Chen">
+                        <img src="/api/placeholder/80/80" alt="Michael Chen">
                     </div>
-                    <p class="testimonial-text">"As a department head, I can now easily match the right students with the right opportunities. The platform has significantly improved our placement rates."</p>
-                    <p class="testimonial-author">Prof. Michael Chen</p>
-                    <p class="testimonial-role">HOD Computer Science, Tech University</p>
+                    <p class="testimonial-text">"I've been mentoring students through LinkedMatrix for the past year, and it's been incredibly rewarding. The platform makes it easy to schedule sessions, share resources, and track progress. It's strengthened my connection to my university."</p>
+                    <p class="testimonial-author">Michael Chen</p>
+                    <p class="testimonial-role">Finance Professional, Class of 2015</p>
                 </div>
                 
                 <div class="testimonial-slide" style="display: none;">
                     <div class="testimonial-avatar">
-                        <img src="https://randomuser.me/api/portraits/women/28.jpg" alt="Emily Rodriguez">
+                        <img src="/api/placeholder/80/80" alt="Priya Sharma">
                     </div>
-                    <p class="testimonial-text">"Thanks to EduConnect, I secured an internship at my dream company! The process was straightforward, and I received notifications at every step."</p>
-                    <p class="testimonial-author">Emily Rodriguez</p>
-                    <p class="testimonial-role">Computer Science Student</p>
+                    <p class="testimonial-text">"LinkedMatrix helped me find alumni working in my dream field. The advice and connections I received were invaluable. I attended a networking event through the platform and landed my first job offer before graduation!"</p>
+                    <p class="testimonial-author">Priya Sharma</p>
+                    <p class="testimonial-role">Computer Science Graduate, Class of 2023</p>
                 </div>
             </div>
         </div>
@@ -672,48 +769,48 @@ input, textarea {
     <section class="section faq" id="faq">
         <div class="container">
             <h2 class="section-title text-center">Frequently Asked Questions</h2>
-            <p class="section-subtitle text-center">Find answers to common questions about our platform</p>
+            <p class="section-subtitle text-center">Find answers to common questions about LinkedMatrix</p>
             
             <div class="faq-container">
                 <div class="faq-item">
-                    <div class="faq-question">How does a company post a job on the platform?</div>
+                    <div class="faq-question">How do I join as an alumnus?</div>
                     <div class="faq-answer">
-                        <p>Companies can register on the platform, create a profile, and then post job opportunities through their dashboard. During the job posting process, they can select specific universities and departments they want to target for recruitment.</p>
+                        <p>To join as an alumnus, simply click on "Alumni Sign Up" and complete your profile with your graduation year, field of expertise, and current position. You can then choose how you'd like to contribute—whether by posting opportunities, mentoring students, or participating in events.</p>
                     </div>
                 </div>
                 
                 <div class="faq-item">
-                    <div class="faq-question">How are universities notified of new job postings?</div>
+                    <div class="faq-question">Is LinkedMatrix free for students?</div>
                     <div class="faq-answer">
-                        <p>Universities receive notifications through their dashboard and via email when a company selects them for a job posting. They can review the details and approve or request modifications before forwarding to the relevant departments.</p>
+                        <p>Yes! LinkedMatrix is completely free for students. We believe in making career connections accessible to all students. Simply register with your university email address to verify your student status and gain access to all platform features.</p>
                     </div>
                 </div>
                 
                 <div class="faq-item">
-                    <div class="faq-question">What is the role of a department head (HOD) in the process?</div>
+                    <div class="faq-question">How do I post an opportunity for students?</div>
                     <div class="faq-answer">
-                        <p>Department heads review job postings relevant to their department, select qualified students based on the company's requirements, and manage the selection process. They can also provide feedback to both students and companies.</p>
+                        <p>As an alumnus, once you've created your profile, you can post opportunities by navigating to the "Post Opportunity" section in your dashboard. Fill out the details including position, requirements, application deadline, and whether it's an internship, full-time role, or project. You can choose to make it visible to students from specific departments or all students.</p>
                     </div>
                 </div>
                 
                 <div class="faq-item">
-                    <div class="faq-question">How do students know they've been selected for a job opportunity?</div>
+                    <div class="faq-question">Can I connect with alumni from specific industries?</div>
                     <div class="faq-answer">
-                        <p>Students receive notifications through their student portal and via email when they've been selected for a job opportunity. They can view the details, express interest, and proceed with the application process.</p>
+                        <p>Absolutely! As a student, you can filter alumni by industry, company, graduation year, or area of expertise. Our advanced search feature helps you find the perfect mentors or connections based on your career interests and goals.</p>
                     </div>
                 </div>
                 
                 <div class="faq-item">
-                    <div class="faq-question">Is there a fee for using the platform?</div>
+                    <div class="faq-question">How does the mentorship program work?</div>
                     <div class="faq-answer">
-                        <p>Companies pay a subscription fee to access the platform's features, while universities, department heads, and students can use the platform for free. Premium features for enhanced recruitment are available for companies at additional costs.</p>
+                        <p>Our mentorship program matches students with alumni based on shared interests, career goals, and expertise. Alumni specify their mentoring capacity and areas of guidance, while students indicate what they're looking for in a mentor. Once matched, you can schedule meetings, set goals, and track progress through our platform.</p>
                     </div>
                 </div>
                 
                 <div class="faq-item">
-                    <div class="faq-question">How is student data protected on the platform?</div>
+                    <div class="faq-question">Are there networking events on LinkedMatrix?</div>
                     <div class="faq-answer">
-                        <p>We take data privacy seriously. Student information is only shared with companies when they are selected for specific opportunities. All data is encrypted, and we comply with relevant data protection regulations.</p>
+                        <p>Yes! We regularly host both virtual and in-person networking events. Alumni can create or sponsor events, while students can browse and register for events relevant to their interests. These include industry panels, resume workshops, mock interviews, and casual networking mixers.</p>
                     </div>
                 </div>
             </div>
@@ -723,12 +820,34 @@ input, textarea {
     <!-- CTA Section -->
     <section class="section cta">
         <div class="container">
-            <h2 class="section-title">Ready to Transform Your Recruitment Process?</h2>
-            <p class="section-subtitle">Join thousands of companies, universities, and students on our platform</p>
-            <a href="#login-sections" class="btn btn-outline">Get Started Today</a>
+            <h2 class="section-title">Join the LinkedMatrix Community Today</h2>
+            <p class="section-subtitle">Connect, mentor, and grow with your university network</p>
+            <a href="#login-sections" class="btn btn-outline">Get Started Now</a>
         </div>
     </section>
 
+    <!-- Contact Form Modal -->
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Contact Us</h2>
+            <form>
+                <label for="name">Name:</label>
+                <input type="text" id="name" required>
+                
+                <label for="email">Email:</label>
+                <input type="email" id="email" required>
+                
+                <label for="message">Message:</label>
+                <textarea id="message" rows="4" required></textarea>
+                
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+  
     <!-- Footer -->
     <footer>
         <div class="container">
