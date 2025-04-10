@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alumni Registration</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top: 20px;
+            padding-bottom: 40px;
+        }
+        .registration-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+        .form-label {
+            font-weight: 500;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .btn-register {
+            background-color: #0d6efd;
+            color: white;
+            padding: 10px 30px;
+            font-weight: 500;
+        }
+        .section-header {
+            margin-top: 25px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        .experience-item, .achievement-item, .degree-item {
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .btn-add {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container registration-container">
+        <div class="header">
+            <h2>Alumni Registration</h2>
+            <p class="text-muted">Join the alumni network to connect with your university community</p>
+        </div>
+
+        <form action="/register_alumni" method="POST">
+            <!-- Basic Information Section -->
+            <h4 class="section-header">Basic Information</h4>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="universityId" class="form-label">University</label>
+                    <select class="form-select" id="universityId" name="universityId" onchange="fetchDepartments()" required>
+                        <option value="">Select your university</option>
+                        {% for university in universities %}
+                        <option value="{{ university._id }}">{{ university.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="department" class="form-label">Department</label>
+                    <select class="form-select" id="department" name="department" required>
+                        <option value="">Select Department</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="name" class="form-label">Full Name</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="confirm_password" class="form-label">Confirm Password</label>
+                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label for="graduation_year" class="form-label">Graduation Year</label>
+                    <input type="number" class="form-control" id="graduation_year" name="graduation_year" min="1900" max="2099" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="degree" class="form-label">Degree</label>
+                    <select class="form-select" id="degree" name="degree">
+                        <option value="">Select your degree</option>
+                        <option value="Bachelor's">Bachelor's</option>
+                        <option value="Master's">Master's</option>
+                        <option value="PhD">PhD</option>
+                        <option value="Associate">Associate</option>
+                        <option value="Diploma">Diploma</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="Mobile" class="form-label">Mobile Number</label>
+                    <input type="tel" class="form-control" id="Mobile" name="Mobile" required>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <label for="current_company" class="form-label">Current Company</label>
+                    <input type="text" class="form-control" id="current_company" name="current_company">
+                </div>
+                <div class="col-md-6">
+                    <label for="current_location" class="form-label">Current Location</label>
+                    <input type="text" class="form-control" id="current_location" name="current_location">
+                </div>
+            </div>
+            
+            <!-- Academic Information Section -->
+            <h4 class="section-header">Academic Information</h4>
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label for="gpa" class="form-label">GPA</label>
+                    <input type="text" class="form-control" id="gpa" name="gpa" placeholder="e.g., 3.8/4.0">
+                </div>
+            </div>
+            
+            <!-- Skills Section -->
+            <h4 class="section-header">Skills</h4>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="technical_skills" class="form-label">Technical Skills</label>
+                    <textarea class="form-control" id="technical_skills" name="technical_skills" rows="3" placeholder="e.g., Programming languages, tools, software"></textarea>
+                </div>
+                <div class="col-md-6">
+                    <label for="soft_skills" class="form-label">Soft Skills</label>
+                    <textarea class="form-control" id="soft_skills" name="soft_skills" rows="3" placeholder="e.g., Communication, leadership, teamwork"></textarea>
+                </div>
+            </div>
+            
+            <!-- Experiences Section -->
+            <h4 class="section-header">Professional Experiences</h4>
+            <div id="experiences-container">
+                <div class="experience-item">
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <label class="form-label">Company Name</label>
+                            <input type="text" class="form-control" name="experience_company[]">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Position</label>
+                            <input type="text" class="form-control" name="experience_position[]">
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <label class="form-label">Start Date</label>
+                            <input type="month" class="form-control" name="experience_start_date[]">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">End Date</label>
+                            <input type="month" class="form-control" name="experience_end_date[]" placeholder="Present if current job">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-control" name="experience_description[]" rows="2"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-outline-primary btn-sm btn-add" id="add-experience">+ Add Another Experience</button>
+            
+            <!-- Achievements Section -->
+            <h4 class="section-header">Achievements</h4>
+            <div id="achievements-container">
+                <div class="achievement-item">
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <label class="form-label">Title</label>
+                            <input type="text" class="form-control" name="achievement_title[]">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Year</label>
+                            <input type="number" class="form-control" name="achievement_year[]" min="1900" max="2099">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-control" name="achievement_description[]" rows="2"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-outline-primary btn-sm btn-add" id="add-achievement">+ Add Another Achievement</button>
+            
+            <!-- Advanced Degrees Section -->
+            <h4 class="section-header">Advanced Degrees</h4>
+            <div id="degrees-container">
+                <div class="degree-item">
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <label class="form-label">Degree Title</label>
+                            <input type="text" class="form-control" name="advanced_degree_title[]">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Institution</label>
+                            <input type="text" class="form-control" name="advanced_degree_institution[]">
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <label class="form-label">Field of Study</label>
+                            <input type="text" class="form-control" name="advanced_degree_field[]">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Year</label>
+                            <input type="number" class="form-control" name="advanced_degree_year[]" min="1900" max="2099">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-outline-primary btn-sm btn-add" id="add-degree">+ Add Another Degree</button>
+            
+            <!-- Mentorship Section -->
+            <h4 class="section-header">Mentorship Information</h4>
+            <div class="row mb-4">
+                <div class="col-12">
+                    <label for="mentorship_bio" class="form-label">Mentorship Bio</label>
+                    <textarea class="form-control" id="mentorship_bio" name="mentorship_bio" rows="4" placeholder="Describe your mentorship interests and how you can help fellow alumni">Feel free to reach out for career guidance or mentorship opportunities.</textarea>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-12">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="terms" required>
+                        <label class="form-check-label" for="terms">
+                            I agree to the terms and conditions
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-grid gap-2 col-6 mx-auto">
+                <button type="submit" class="btn btn-register">Register</button>
+            </div>
+
+            <div class="mt-3 text-center">
+                <p>Already have an account? <a href="/login">Login here</a></p>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Form validation
+        document.querySelector('form').addEventListener('submit', function(event) {
+            const password = document.getElementById('password');
+            const confirmPassword = document.getElementById('confirm_password');
+            
+            if (password.value !== confirmPassword.value) {
+                alert("Passwords don't match!");
+                event.preventDefault();
+            }
+        });
+        
+        // Fetch departments based on university selection
+        async function fetchDepartments() {
+            try {
+                const universityId = document.getElementById('universityId').value;
+                if (!universityId) {
+                    document.getElementById('department').innerHTML = '<option value="">Select Department</option>';
+                    return;
+                }
+                
+                const response = await fetch(`/get_departments/${universityId}`);
+                const departments = await response.json();
+                const departmentSelect = document.getElementById('department');
+                departmentSelect.innerHTML = '<option value="">Select Department</option>';
+                
+                departments.forEach(department => {
+                    const option = document.createElement('option');
+                    option.value = department;
+                    option.textContent = department;
+                    departmentSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error fetching departments:', error);
+            }
+        }
+        
+        // Add new experience
+        document.getElementById('add-experience').addEventListener('click', function() {
+            const container = document.getElementById('experiences-container');
+            const newItem = document.querySelector('.experience-item').cloneNode(true);
+            
+            // Clear input values
+            const inputs = newItem.querySelectorAll('input, textarea');
+            inputs.forEach(input => input.value = '');
+            
+            container.appendChild(newItem);
+        });
+        
+        // Add new achievement
+        document.getElementById('add-achievement').addEventListener('click', function() {
+            const container = document.getElementById('achievements-container');
+            const newItem = document.querySelector('.achievement-item').cloneNode(true);
+            
+            // Clear input values
+            const inputs = newItem.querySelectorAll('input, textarea');
+            inputs.forEach(input => input.value = '');
+            
+            container.appendChild(newItem);
+        });
+        
+        // Add new advanced degree
+        document.getElementById('add-degree').addEventListener('click', function() {
+            const container = document.getElementById('degrees-container');
+            const newItem = document.querySelector('.degree-item').cloneNode(true);
+            
+            // Clear input values
+            const inputs = newItem.querySelectorAll('input, textarea');
+            inputs.forEach(input => input.value = '');
+            
+            container.appendChild(newItem);
+        });
+    </script>
+</body>
+</html>

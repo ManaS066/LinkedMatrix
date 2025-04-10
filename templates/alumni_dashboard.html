@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alumni Profile</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <style>
+    /* Reset and base styles */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      /* Enhanced color palette */
+      --background: 220 13% 13%;
+      /* Deep midnight blue */
+      --foreground: 0 0% 95%;
+      /* Light gray */
+      --card: 225 15% 20%;
+      /* Darker blue-gray */
+      --card-foreground: 0 0% 98%;
+      /* Almost white */
+      --primary: 237 69% 61%;
+      /* Vibrant blue */
+      --primary-foreground: 0 0% 100%;
+      /* White */
+      --secondary: 262 52% 54%;
+      /* Rich purple */
+      --secondary-foreground: 0 0% 98%;
+      /* Almost white */
+      --muted: 235 20% 30%;
+      /* Muted blue-gray */
+      --muted-foreground: 240 5% 84%;
+      /* Light grayish */
+      --accent: 273 39% 49%;
+      /* Deep purple accent */
+      --accent-foreground: 0 0% 98%;
+      /* Almost white */
+      --destructive: 0 84.2% 60.2%;
+      /* Bright red */
+      --destructive-foreground: 0 0% 98%;
+      /* White */
+      --border: 240 10% 40%;
+      /* Dark border */
+      --input: 240 10% 35%;
+      /* Slightly darker input */
+      --ring: 237 69% 61%;
+      /* Blue ring */
+      --radius: 0.5rem;
+    }
+
+    .dark {
+      /* Even more vibrant dark mode */
+      --background: 240 10% 10%;
+      /* Ultra dark blue-black */
+      --foreground: 0 0% 95%;
+      /* Light gray */
+      --card: 240 15% 15%;
+      /* Deep charcoal */
+      --card-foreground: 0 0% 98%;
+      /* Almost white */
+      --primary: 260 80% 65%;
+      /* Bright lavender */
+      --primary-foreground: 0 0% 100%;
+      /* White */
+      --secondary: 300 60% 55%;
+      /* Vivid magenta */
+      --secondary-foreground: 0 0% 98%;
+      /* Almost white */
+      --muted: 250 20% 25%;
+      /* Deep muted purple */
+      --muted-foreground: 240 5% 84%;
+      /* Light grayish */
+      --accent: 300 50% 45%;
+      /* Rich magenta accent */
+      --accent-foreground: 0 0% 98%;
+      /* Almost white */
+      --destructive: 350 90% 60%;
+      /* Bright coral red */
+      --destructive-foreground: 0 0% 98%;
+      /* White */
+      --border: 270 15% 35%;
+      /* Deep purple border */
+      --input: 270 15% 30%;
+      /* Dark input */
+      --ring: 260 80% 65%;
+      /* Lavender ring */
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: hsl(var(--muted-foreground));
+      color: hsl(var(--foreground));
+      min-height: 100vh;
+      line-height: 1.5;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    /* Card styles */
+    .card {
+      background-color: hsl(var(--card) / 0.8);
+      border-radius: var(--radius);
+      border: 1px solid hsl(var(--border));
+      box-shadow: 0 4px 6px hsl(var(--primary) / 0.2);
+      backdrop-filter: blur(8px);
+      transition: transform 0.3s, box-shadow 0.3s;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px hsl(var(--primary) / 0.3);
+    }
+
+    .card-header {
+      padding: 1.5rem 1.5rem 0.5rem;
+    }
+
+    .card-content {
+      padding: 1.5rem;
+    }
+
+    .card-footer {
+      padding: 1.5rem;
+      border-top: 1px solid hsl(var(--border));
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    .card-description {
+      color: hsl(var(--muted-foreground));
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+    }
+
+    /* Avatar styles */
+    .avatar {
+      position: relative;
+      width: 8rem;
+      height: 8rem;
+      border-radius: 9999px;
+      overflow: hidden;
+      margin: 0 auto;
+      border: 4px solid hsl(var(--ring) / 0.2);
+    }
+
+    .avatar-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .avatar-fallback {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: hsl(var(--primary) / 0.1);
+      color: hsl(var(--primary));
+      font-size: 1.5rem;
+      font-weight: 500;
+    }
+
+    /* Utility classes */
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .min-h-screen {
+      min-height: 100vh;
+    }
+
+    .bg-gradient-to-br {
+      background-image: linear-gradient(to bottom right, hsl(var(--background)), hsl(var(--secondary) / 0.2));
+    }
+
+    .p-4 {
+      padding: 1rem;
+    }
+
+    .md\:p-8 {
+      padding: 2rem;
+    }
+
+    .mx-auto {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .max-w-6xl {
+      max-width: 72rem;
+    }
+
+    .grid {
+      display: grid;
+    }
+
+    .grid-cols-1 {
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+
+    @media (min-width: 768px) {
+      .md\:grid-cols-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .md\:col-span-1 {
+        grid-column: span 1 / span 1;
+      }
+
+      .md\:col-span-2 {
+        grid-column: span 2 / span 2;
+      }
+    }
+
+    .gap-6 {
+      gap: 1.5rem;
+    }
+
+    .gap-4 {
+      gap: 1rem;
+    }
+
+    .gap-2 {
+      gap: 0.5rem;
+    }
+
+    .space-y-6>*+* {
+      margin-top: 1.5rem;
+    }
+
+    .space-y-4>*+* {
+      margin-top: 1rem;
+    }
+
+    .space-y-1>*+* {
+      margin-top: 0.25rem;
+    }
+
+    .flex {
+      display: flex;
+    }
+
+    .flex-col {
+      flex-direction: column;
+    }
+
+    .flex-wrap {
+      flex-wrap: wrap;
+    }
+
+    .items-center {
+      align-items: center;
+    }
+
+    .justify-between {
+      justify-content: space-between;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .text-2xl {
+      font-size: 1.5rem;
+    }
+
+    .text-xl {
+      font-size: 1.25rem;
+    }
+
+    .text-lg {
+      font-size: 1.125rem;
+    }
+
+    .text-sm {
+      font-size: 0.875rem;
+    }
+
+    .font-bold {
+      font-weight: 700;
+    }
+
+    .font-semibold {
+      font-weight: 600;
+    }
+
+    .font-medium {
+      font-weight: 500;
+    }
+
+    /* Badge styles */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 9999px;
+      padding: 0.25rem 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      line-height: 1;
+      background-color: hsl(var(--primary));
+      color: hsl(var(--primary-foreground));
+      box-shadow: 0 2px 4px hsl(var(--primary) / 0.3);
+      transition: transform 0.2s;
+    }
+
+    .badge:hover {
+      transform: scale(1.05);
+    }
+
+    .badge-secondary {
+      background-color: hsl(var(--secondary));
+      color: hsl(var(--secondary-foreground));
+    }
+
+    /* Tabs */
+    .tabs {
+      width: 100%;
+    }
+
+    .tabs-list {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      margin-bottom: 1rem;
+      background-color: hsl(var(--muted));
+      border-radius: var(--radius);
+      padding: 0.25rem;
+    }
+
+    .tab-trigger {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem;
+      border-radius: calc(var(--radius) - 2px);
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: hsl(var(--foreground));
+      cursor: pointer;
+      transition: all 0.2s;
+      background-color: transparent;
+    }
+
+    .tab-trigger[aria-selected="true"] {
+      background-color: hsl(var(--primary));
+      color: hsl(var(--primary-foreground));
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    .tab-trigger .icon {
+      stroke: currentColor;
+    }
+
+    .tab-trigger:hover {
+      background-color: hsl(var(--muted) / 0.5);
+    }
+
+    .tab-content[data-state="active"] {
+      display: block;
+    }
+
+    /* List styles */
+    .list-disc {
+      list-style-type: disc;
+      padding-left: 1.25rem;
+    }
+
+    /* Icon styles */
+    .icon {
+      width: 1rem;
+      height: 1rem;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .icon-lg {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+
+    /* Alumni-specific styles */
+    .timeline {
+      position: relative;
+      margin: 1rem 0;
+      padding-left: 2rem;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, hsl(var(--primary)), hsl(var(--secondary)));
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-bottom: 1.5rem;
+    }
+
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: -2rem;
+      top: 0.25rem;
+      width: 1rem;
+      height: 1rem;
+      border-radius: 50%;
+      background-color: hsl(var(--primary));
+      border: 2px solid hsl(var(--primary-foreground));
+      box-shadow: 0 0 0 2px hsl(var(--primary) / 0.2);
+    }
+
+    .timeline-year {
+      font-weight: bold;
+      color: hsl(var(--primary));
+    }
+
+    .alumni-header {
+      position: relative;
+      background: linear-gradient(45deg, hsl(var(--secondary)), hsl(var(--primary)));
+      color: white;
+      padding: 1rem;
+      border-top-left-radius: var(--radius);
+      border-top-right-radius: var(--radius);
+      box-shadow:
+        0 0 10px rgba(130, 80, 223, 0.5),
+        0 0 20px rgba(130, 80, 223, 0.3);
+      animation: pulse-purple 2s infinite alternate;
+    }
+
+    @keyframes pulse-purple {
+      from {
+        box-shadow:
+          0 0 10px rgba(130, 80, 223, 0.5),
+          0 0 20px rgba(130, 80, 223, 0.3);
+      }
+
+      to {
+        box-shadow:
+          0 0 15px rgba(130, 80, 223, 0.7),
+          0 0 25px rgba(130, 80, 223, 0.5);
+      }
+    }
+
+    .alumni-header .card-title {
+      color: white;
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+    }
+
+    /* Form input styles */
+    .input,
+    .textarea {
+      width: 100%;
+      padding: 0.5rem;
+      border-radius: var(--radius);
+      background-color: hsl(var(--input));
+      color: hsl(var(--foreground));
+      border: 1px solid hsl(var(--border));
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .input:focus,
+    .textarea:focus {
+      border-color: hsl(var(--ring));
+      box-shadow: 0 0 0 1px hsl(var(--ring) / 0.5);
+    }
+
+    .textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    /* Button styles */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius);
+      font-weight: 500;
+      transition: all 0.2s;
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+    }
+
+    .btn-sm {
+      font-size: 0.875rem;
+      padding: 0.375rem 0.75rem;
+      gap: 0.25rem;
+    }
+
+    .btn-primary {
+      background-color: hsl(var(--primary));
+      color: hsl(var(--primary-foreground));
+      border: none;
+    }
+
+    .btn-primary:hover {
+      background-color: hsl(var(--primary) / 0.9);
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      border: 1px solid hsl(var(--border));
+      color: hsl(var(--foreground));
+    }
+
+    .btn-outline:hover {
+      background-color: hsl(var(--muted) / 0.1);
+      border-color: hsl(var(--foreground));
+    }
+
+    /* Toast styling */
+    .toast-container {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      z-index: 1000;
+    }
+
+    .toast {
+      padding: 1rem;
+      background-color: hsl(var(--card));
+      border-radius: var(--radius);
+      border-left: 4px solid hsl(var(--primary));
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      min-width: 300px;
+      animation: slideIn 0.3s ease-out;
+      opacity: 1;
+      transition: opacity 0.3s;
+    }
+
+    .toast.hide {
+      opacity: 0;
+    }
+
+    .toast-title {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .toast-description {
+      font-size: 0.875rem;
+      color: hsl(var(--muted-foreground));
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    /* Profile Edit Icon and Controls */
+    .edit-icon {
+      width: 1.25rem;
+      height: 1.25rem;
+      cursor: pointer;
+      color: hsl(var(--foreground) / 0.5);
+      transition: color 0.2s;
+    }
+
+    .edit-icon:hover {
+      color: hsl(var(--foreground));
+    }
+  </style>
+</head>
+
+<body>
+  <div class="min-h-screen bg-gradient-to-br p-4 md:p-8">
+    <div class="container mx-auto max-w-6xl">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Profile Section -->
+        <div class="card md:col-span-1">
+          <div class="card-header text-center">
+            <div class="avatar">
+              <img src="/api/placeholder/200/200" alt="Profile Picture" class="avatar-image"
+                onerror="this.onerror=null; this.classList.add('avatar-fallback'); this.innerHTML = '{{ alumni.name[0] }}';">
+              <div class="avatar-fallback">{{ alumni.name[0] }}</div>
+            </div>
+            <h2 class="card-title mt-4 text-2xl font-bold">{{ alumni.name }}</h2>
+            <p class="card-description">{{ alumni.department }} • Class of {{ alumni.graduation_year }}</p>
+          </div>
+          <div class="card-content space-y-4">
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="text-lg font-medium">Profile Information</h3>
+              <button class="btn btn-outline btn-sm edit-profile-btn gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-sm">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+                Edit
+              </button>
+              <div class="flex gap-2 save-profile-controls" style="display: none;">
+                <button class="btn btn-outline btn-sm cancel-profile-btn">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="icon-sm">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </button>
+                <button class="btn btn-primary btn-sm save-profile-btn gap-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="icon-sm">
+                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                    <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                    <polyline points="7 3 7 8 15 8"></polyline>
+                  </svg>
+                  Save
+                </button>
+              </div>
+            </div>
+
+            <!-- Profile View Mode -->
+            <div class="profile-view space-y-4">
+              <p><strong>Email:</strong> {{ alumni.email }}</p>
+              <p><strong>Mobile No:</strong> {{ alumni.mobile_no }}</p>
+              <p><strong>Current Location:</strong> {{ alumni.current_location }}</p>
+              <p><strong>Current Company:</strong> {{ alumni.current_company }}</p>
+              <!-- Add this button to the alumni dashboard -->
+              <div class="card">
+                <div class="card-content">
+                  <a href="/chat" class="btn btn-primary w-full flex items-center justify-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                    Connect with Students
+                  </a>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Profile Edit Mode -->
+            <div class="profile-edit space-y-4" style="display: none;">
+              <div>
+                <label for="email" class="text-sm font-medium text-muted-foreground block mb-1">Email</label>
+                <input type="email" id="email" class="input" value="{{ alumni.email }}">
+              </div>
+              <div>
+                <label for="mobile" class="text-sm font-medium text-muted-foreground block mb-1">Mobile No</label>
+                <input type="text" id="mobile" class="input" value="{{ alumni.mobile_no }}">
+              </div>
+              <div>
+                <label for="location" class="text-sm font-medium text-muted-foreground block mb-1">Current
+                  Location</label>
+                <input type="text" id="location" class="input" value="{{ alumni.current_location }}">
+              </div>
+              <div>
+                <label for="company" class="text-sm font-medium text-muted-foreground block mb-1">Current
+                  Company</label>
+                <input type="text" id="company" class="input" value="{{ alumni.current_company }}">
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Main Content Section -->
+        <div class="md:col-span-2 space-y-6">
+          <!-- Career highlights -->
+          <div class="card">
+            <div class="card-header alumni-header">
+              <h3 class="card-title text-xl font-bold">Career Journey</h3>
+            </div>
+            <div class="card-content">
+              <div class="timeline">
+                {% for experience in alumni.experiences %}
+                <div class="timeline-item">
+                  <div class="timeline-year">{{ experience.start_year }} - {{ experience.end_year or 'Present' }}</div>
+                  <div class="text-lg font-medium">{{ experience.role }}</div>
+                  <div class="text-sm">{{ experience.company }}</div>
+                  <p class="text-sm mt-2">{{ experience.description }}</p>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+
+          <!-- Tabs for Education, Skills & Achievements -->
+          <div class="tabs">
+            <div class="tabs-list" role="tablist">
+              <button class="tab-trigger" role="tab" aria-selected="true" data-tab="education">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                  <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                  <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                </svg>
+                Education
+              </button>
+              <button class="tab-trigger" role="tab" aria-selected="false" data-tab="skills">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                  <polyline points="16 18 22 12 16 6"></polyline>
+                  <polyline points="8 6 2 12 8 18"></polyline>
+                </svg>
+                Skills
+              </button>
+              <button class="tab-trigger" role="tab" aria-selected="false" data-tab="achievements">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                  <circle cx="12" cy="8" r="7"></circle>
+                  <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                </svg>
+                Achievements
+              </button>
+            </div>
+
+            <!-- Education Tab -->
+            <div class="tab-content" data-state="active" data-tab="education">
+              <div class="card">
+                <div class="card-header flex flex-row items-center justify-between pb-2">
+                  <div>
+                    <h3 class="card-title text-xl flex items-center gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="icon-lg">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                        <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                      </svg>
+                      Educational Background
+                    </h3>
+                  </div>
+                </div>
+                <div class="card-content">
+                  <div class="space-y-4">
+                    <div>
+                      <h4 class="text-lg font-medium">{{ alumni.university_name }}</h4>
+                      <p class="text-sm">{{ alumni.degree }} in {{ alumni.department }}</p>
+                      <p class="text-sm">Graduated: {{ alumni.graduation_year }}</p>
+                      <p class="text-sm">GPA: {{ alumni.gpa }}</p>
+                    </div>
+
+                    {% if alumni.advanced_degrees %}
+                    <div>
+                      <h4 class="text-lg font-medium mt-4">Advanced Degrees</h4>
+                      {% for degree in alumni.advanced_degrees %}
+                      <div class="mt-2">
+                        <p class="font-medium">{{ degree.degree_name }}</p>
+                        <p class="text-sm">{{ degree.institution }}</p>
+                        <p class="text-sm">{{ degree.year }}</p>
+                      </div>
+                      {% endfor %}
+                    </div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Skills Tab -->
+            <div class="tab-content" data-tab="skills" style="display: none;">
+              <div class="card">
+                <div class="card-header flex flex-row items-center justify-between pb-2">
+                  <div>
+                    <h3 class="card-title text-xl flex items-center gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="icon-lg">
+                        <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                        <rect x="9" y="9" width="6" height="6"></rect>
+                        <line x1="9" y1="1" x2="9" y2="4"></line>
+                        <line x1="15" y1="1" x2="15" y2="4"></line>
+                        <line x1="9" y1="20" x2="9" y2="23"></line>
+                        <line x1="15" y1="20" x2="15" y2="23"></line>
+                        <line x1="20" y1="9" x2="23" y2="9"></line>
+                        <line x1="20" y1="14" x2="23" y2="14"></line>
+                        <line x1="1" y1="9" x2="4" y2="9"></line>
+                        <line x1="1" y1="14" x2="4" y2="14"></line>
+                      </svg>
+                      Professional Skills
+                    </h3>
+                  </div>
+                </div>
+                <div class="card-content">
+                  <div>
+                    <h4 class="text-sm font-medium text-muted-foreground mb-2">Technical Skills</h4>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                      {% for skill in alumni.technical_skills.split(',') %}
+                      <span class="badge text-xs py-1 px-3">{{ skill }}</span>
+                      {% endfor %}
+                    </div>
+
+                    <h4 class="text-sm font-medium text-muted-foreground mb-2 mt-4">Soft Skills</h4>
+                    <div class="flex flex-wrap gap-2">
+                      {% for skill in alumni.soft_skills.split(',') %}
+                      <span class="badge badge-secondary text-xs py-1 px-3">{{ skill }}</span>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Achievements Tab -->
+            <div class="tab-content" data-tab="achievements" style="display: none;">
+              <div class="card">
+                <div class="card-header flex flex-row items-center justify-between pb-2">
+                  <div>
+                    <h3 class="card-title text-xl flex items-center gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="icon-lg">
+                        <circle cx="12" cy="8" r="7"></circle>
+                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                      </svg>
+                      Achievements & Recognitions
+                    </h3>
+                  </div>
+                </div>
+                <div class="card-content">
+                  <ul class="list-disc space-y-3 pl-5">
+                    {% for achievement in alumni.achievements %}
+                    <li>
+                      <div class="font-medium">{{ achievement.title }}</div>
+                      <div class="text-sm">{{ achievement.year }}</div>
+                      <p class="text-sm mt-1">{{ achievement.description }}</p>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact for mentorship -->
+          <div class="card">
+            <div class="card-content">
+              <div class="flex items-center gap-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+                <div>
+                  <h3 class="font-semibold text-lg">Available for Mentorship</h3>
+                  <p class="text-sm">{{ alumni.mentorship_bio }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Tab functionality
+    const tabTriggers = document.querySelectorAll('.tab-trigger');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabTriggers.forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        const tabName = trigger.getAttribute('data-tab');
+
+        // Update tab triggers
+        tabTriggers.forEach(t => {
+          t.setAttribute('aria-selected', 'false');
+        });
+        trigger.setAttribute('aria-selected', 'true');
+
+        // Update tab contents
+        tabContents.forEach(content => {
+          if (content.getAttribute('data-tab') === tabName) {
+            content.style.display = 'block';
+            content.setAttribute('data-state', 'active');
+          } else {
+            content.style.display = 'none';
+            content.setAttribute('data-state', 'inactive');
+          }
+        });
+      });
+    });
+  </script>
+</body>
+<script>
+  // // Tab functionality
+  // const tabTriggers = document.querySelectorAll('.tab-trigger');
+  // const tabContents = document.querySelectorAll('.tab-content');
+
+  tabTriggers.forEach(trigger => {
+    trigger.addEventListener('click', () => {
+      const tabName = trigger.getAttribute('data-tab');
+
+      // Update tab triggers
+      tabTriggers.forEach(t => {
+        t.setAttribute('aria-selected', 'false');
+      });
+      trigger.setAttribute('aria-selected', 'true');
+
+      // Update tab contents
+      tabContents.forEach(content => {
+        if (content.getAttribute('data-tab') === tabName) {
+          content.style.display = 'block';
+          content.setAttribute('data-state', 'active');
+        } else {
+          content.style.display = 'none';
+          content.setAttribute('data-state', 'inactive');
+        }
+      });
+    });
+  });
+
+  // Profile edit functionality
+  const editProfileBtn = document.querySelector('.edit-profile-btn');
+  const saveProfileBtn = document.querySelector('.save-profile-btn');
+  const cancelProfileBtn = document.querySelector('.cancel-profile-btn');
+  const saveProfileControls = document.querySelector('.save-profile-controls');
+  const profileView = document.querySelector('.profile-view');
+  const profileEdit = document.querySelector('.profile-edit');
+
+  // Store original values for cancel operation
+  let originalValues = {
+    email: document.getElementById('email').value,
+    mobile: document.getElementById('mobile').value,
+    location: document.getElementById('location').value,
+    company: document.getElementById('company').value
+  };
+
+  // Toggle edit mode
+  editProfileBtn.addEventListener('click', () => {
+    // Show edit form and hide view mode
+    profileView.style.display = 'none';
+    profileEdit.style.display = 'block';
+
+    // Show save controls and hide edit button
+    editProfileBtn.style.display = 'none';
+    saveProfileControls.style.display = 'flex';
+
+    // Store current values in case user cancels
+    originalValues = {
+      email: document.getElementById('email').value,
+      mobile: document.getElementById('mobile').value,
+      location: document.getElementById('location').value,
+      company: document.getElementById('company').value
+    };
+  });
+
+  // Cancel edit
+  cancelProfileBtn.addEventListener('click', () => {
+    // Restore original values
+    document.getElementById('email').value = originalValues.email;
+    document.getElementById('mobile').value = originalValues.mobile;
+    document.getElementById('location').value = originalValues.location;
+    document.getElementById('company').value = originalValues.company;
+
+    // Switch back to view mode
+    profileView.style.display = 'block';
+    profileEdit.style.display = 'none';
+
+    // Show edit button and hide save controls
+    editProfileBtn.style.display = 'inline-flex';
+    saveProfileControls.style.display = 'none';
+  });
+
+  // Save profile changes
+  saveProfileBtn.addEventListener('click', () => {
+    // Get updated values
+    const newEmail = document.getElementById('email').value;
+    const newMobile = document.getElementById('mobile').value;
+    const newLocation = document.getElementById('location').value;
+    const newCompany = document.getElementById('company').value;
+
+    // Update the view mode with new values
+    const profileViewElements = profileView.querySelectorAll('p');
+    profileViewElements[0].innerHTML = `<strong>Email:</strong> ${newEmail}`;
+    profileViewElements[1].innerHTML = `<strong>Mobile No:</strong> ${newMobile}`;
+    profileViewElements[2].innerHTML = `<strong>Current Location:</strong> ${newLocation}`;
+    profileViewElements[3].innerHTML = `<strong>Current Company:</strong> ${newCompany}`;
+
+    // Here you would normally also send data to server via AJAX
+    // Example:
+    // fetch('/api/update-profile', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     email: newEmail,
+    //     mobile_no: newMobile,
+    //     current_location: newLocation,
+    //     current_company: newCompany
+    //   })
+    // })
+    // .then(response => response.json())
+    // .then(data => {
+    //   console.log('Success:', data);
+    // })
+    // .catch(error => {
+    //   console.error('Error:', error);
+    // });
+
+    // Switch back to view mode
+    profileView.style.display = 'block';
+    profileEdit.style.display = 'none';
+
+    // Show edit button and hide save controls
+    editProfileBtn.style.display = 'inline-flex';
+    saveProfileControls.style.display = 'none';
+
+    // Show success message (optional)
+    const successMessage = document.createElement('div');
+    successMessage.className = 'alert alert-success';
+    successMessage.textContent = 'Profile updated successfully!';
+    profileView.parentNode.insertBefore(successMessage, profileView);
+
+    // Remove success message after 3 seconds
+    setTimeout(() => {
+      successMessage.remove();
+    }, 3000);
+  });
+
+  // Initialize avatar fallback for when image fails to load
+  document.addEventListener('DOMContentLoaded', () => {
+    const avatarImg = document.querySelector('.avatar-image');
+    const avatarFallback = document.querySelector('.avatar-fallback');
+
+    // Check if image loaded successfully
+    if (avatarImg.complete && avatarImg.naturalHeight !== 0) {
+      avatarFallback.style.display = 'none';
+    } else {
+      avatarImg.style.display = 'none';
+      avatarFallback.style.display = 'flex';
+    }
+  });
+</script>
+
+</html>
