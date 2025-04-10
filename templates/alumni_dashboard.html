@@ -590,7 +590,112 @@
     .edit-icon:hover {
       color: hsl(var(--foreground));
     }
+    /* Modal styles */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background-color: hsl(var(--card));
+  border-radius: var(--radius);
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+  animation: modalFadeIn 0.3s;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.modal-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: hsl(var(--foreground));
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--border));
+  background-color: hsl(var(--input));
+  color: hsl(var(--foreground));
+}
+
+.form-text {
+  font-size: 0.75rem;
+  color: hsl(var(--muted-foreground));
+  margin-top: 0.25rem;
+}
+
+.submit-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  border: none;
+  border-radius: var(--radius);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.submit-btn:hover {
+  background-color: hsl(var(--primary) / 0.9);
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
   </style>
+  
 </head>
 
 <body>
@@ -659,6 +764,17 @@
                   </a>
                 </div>
               </div>
+              <div class="card">
+                <div class="card-content">
+                  <button onclick="openProjectModal()" class="btn btn-primary flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="12" y1="5" x2="12" y2="19"></line>
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    Add New Project
+                  </button>
+                </div>
+              </div>
 
             </div>
 
@@ -698,7 +814,7 @@
               <div class="timeline">
                 {% for experience in alumni.experiences %}
                 <div class="timeline-item">
-                  <div class="timeline-year">{{ experience.start_year }} - {{ experience.end_year or 'Present' }}</div>
+                  <div class="timeline-year">{{ experience.start_year }} - {{ experience.end_year or '2 year experience' }}</div>
                   <div class="text-lg font-medium">{{ experience.role }}</div>
                   <div class="text-sm">{{ experience.company }}</div>
                   <p class="text-sm mt-2">{{ experience.description }}</p>
@@ -876,6 +992,200 @@
       </div>
     </div>
   </div>
+
+    <!-- Modal Form for Adding Project -->
+    <div id="projectModal" class="modal">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h3 class="modal-title">Add New Project</h3>
+              <button type="button" class="close" onclick="closeProjectModal()">&times;</button>
+          </div>
+          <div class="modal-body">
+              <form id="addProjectForm" action="{{ url_for('add_project') }}" method="POST">
+                  <div class="form-group">
+                      <label for="universities" class="form-label">Select Universities</label>
+                      <select id="universities" name="universities[]" class="form-control" multiple required>
+                          {% for university in university_list %}
+                          <option value="{{ university._id }}">{{ university.name }}</option>
+                          {% endfor %}
+                      </select>
+                      <div class="form-text">Hold Ctrl (or Cmd on Mac) to select multiple universities</div>
+                  </div>
+
+                  <div class="form-group">
+                      <label for="project_desc" class="form-label">Project Description</label>
+                      <textarea id="project_desc" name="project_desc" rows="4" class="form-control"
+                          required></textarea>
+                  </div>
+
+                  <div class="form-group">
+                      <label for="problem_statement" class="form-label">Project/Problem Statement</label>
+                      <textarea id="problem_statement" name="problem_statement" rows="4" class="form-control"
+                          required></textarea>
+                  </div>
+
+                  <div class="form-group">
+                      <label for="reward" class="form-label">Reward</label>
+                      <input type="text" id="reward" name="reward" class="form-control" required>
+                  </div>
+
+                  <div class="form-group">
+                      <label for="duration" class="form-label">Project Deadline</label>
+                      <input type="date" id="duration" name="duration" class="form-control" required>
+                  </div>
+                  <br>
+
+                  <button type="submit" class="submit-btn">Submit</button>
+              </form>
+          </div>
+      </div>
+  </div>
+  <script>
+   // Replace the existing project modal script with this improved version
+function openProjectModal() {
+  document.getElementById("projectModal").style.display = "flex";
+}
+
+function closeProjectModal() {
+  document.getElementById("projectModal").style.display = "none";
+}
+
+// Close modal if clicked outside of modal content
+window.addEventListener('click', function(event) {
+  const modal = document.getElementById('projectModal');
+  if (event.target === modal) {
+    closeProjectModal();
+  }
+});
+
+// Form handling with validation and AJAX submission
+document.getElementById('addProjectForm').addEventListener('submit', function(e) {
+  e.preventDefault(); // Prevent default form submission
+  
+  // Validate form
+  const universities = document.getElementById('universities');
+  const projectDesc = document.getElementById('project_desc').value;
+  const problemStatement = document.getElementById('problem_statement').value;
+  const reward = document.getElementById('reward').value;
+  const duration = document.getElementById('duration').value;
+
+  // Form validation
+  if (universities.selectedOptions.length === 0) {
+    showToast('Please select at least one university', 'error');
+    return;
+  }
+
+  if (!projectDesc.trim()) {
+    showToast('Please enter a project description', 'error');
+    return;
+  }
+
+  if (!problemStatement.trim()) {
+    showToast('Please enter a project/problem statement', 'error');
+    return;
+  }
+
+  if (!reward.trim()) {
+    showToast('Please enter a reward', 'error');
+    return;
+  }
+
+  if (!duration) {
+    showToast('Please select a valid date for the project deadline', 'error');
+    return;
+  }
+  
+  // Collect form data
+  const formData = new FormData(this);
+  const selectedUniversities = Array.from(universities.selectedOptions).map(option => option.value);
+  
+  // Convert FormData to JSON
+  const projectData = {
+    universities: selectedUniversities,
+    project_desc: projectDesc,
+    problem_statement: problemStatement,
+    reward: reward,
+    duration: duration
+  };
+  
+  // Send AJAX request
+  fetch('/api/projects/add', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(projectData)
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json();
+  })
+  .then(data => {
+    showToast('Project added successfully!', 'success');
+    closeProjectModal();
+    // Optional: Reset form
+    document.getElementById('addProjectForm').reset();
+    // Optional: Refresh project list if displayed on the page
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    showToast('Failed to add project. Please try again.', 'error');
+  });
+});
+
+// Toast notification function
+function showToast(message, type = 'info') {
+  // Create toast container if it doesn't exist
+  let toastContainer = document.querySelector('.toast-container');
+  if (!toastContainer) {
+    toastContainer = document.createElement('div');
+    toastContainer.className = 'toast-container';
+    document.body.appendChild(toastContainer);
+  }
+  
+  // Create toast element
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  if (type === 'error') {
+    toast.style.borderLeft = '4px solid hsl(var(--destructive))';
+  } else if (type === 'success') {
+    toast.style.borderLeft = '4px solid hsl(120, 100%, 37%)';
+  }
+  
+  toast.innerHTML = `
+    <div class="toast-title">${type.charAt(0).toUpperCase() + type.slice(1)}</div>
+    <div class="toast-description">${message}</div>
+  `;
+  
+  // Add toast to container
+  toastContainer.appendChild(toast);
+  
+  // Remove toast after 3 seconds
+  setTimeout(() => {
+    toast.classList.add('hide');
+    setTimeout(() => {
+      toast.remove();
+    }, 300);
+  }, 3000);
+}
+function loadUniversities() {
+            fetch('/get_universities')
+                .then(response => response.json())
+                .then(data => {
+                    const universitySelect = document.getElementById("university");
+                    universitySelect.innerHTML = `<option value="">Select University</option>`; // Clear previous options
+                    data.forEach(u => {
+                        const option = document.createElement("option");
+                        option.value = u.id;
+                        option.textContent = u.name;
+                        universitySelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error fetching universities:', error));
+        }
+</script>
 
   <script>
     // Tab functionality
