@@ -2,8 +2,10 @@ from flask import Flask, render_template
 from flask_pymongo import ASCENDING, PyMongo
 from flask_apscheduler import APScheduler
 import os
-
+from flask_socketio import SocketIO
 app = Flask(__name__)
+socketio = SocketIO(app)
+
 app.secret_key = os.urandom(24)
 
 # MongoDB Configuration
